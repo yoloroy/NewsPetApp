@@ -8,6 +8,8 @@ sealed interface NewsPredicate : Predicate<NewsFilterData> {
 
     class List(private val predicates: Collection<NewsPredicate>) : NewsPredicate {
         override fun test(data: NewsFilterData): Boolean = predicates.all { it.test(data) }
+
+        override fun plus(other: NewsPredicate) = List(predicates + other)
     }
 
     sealed class Contains(
@@ -25,5 +27,8 @@ sealed interface NewsPredicate : Predicate<NewsFilterData> {
     class TitleContains(title: String) : Contains(title = title)
     class DescriptionContains(description: String) : Contains(description = description)
     class ContentContains(content: String) : Contains(content = content)
-}
 
+    fun <T> apply(list: Collection<T>, map: (T) -> NewsFilterData) = list.filter { test(map(it)) }
+
+    operator fun plus(other: NewsPredicate): NewsPredicate = List(listOf(this, other))
+}
