@@ -26,7 +26,7 @@ class NewsRepositoryImpl(
     override fun getDetails(short: NewsShort): Flow<DetailsGettingResult> = flow {
         emit(
             instantSource.getDetails(short)
-                ?.toDetailsGettingResult()
+                ?.let { DetailsGettingResult.Success(it) }
                 ?: DetailsGettingResult.Loading
         )
 
