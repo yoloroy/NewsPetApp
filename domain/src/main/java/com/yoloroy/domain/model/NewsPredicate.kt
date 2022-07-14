@@ -1,10 +1,12 @@
 package com.yoloroy.domain.model
 
-import java.util.function.Predicate
+sealed interface NewsPredicate {
 
-sealed interface NewsPredicate : Predicate<NewsFilterData> {
+    fun test(data: NewsFilterData): Boolean
 
-    override fun test(data: NewsFilterData): Boolean
+    object Empty : NewsPredicate {
+        override fun test(data: NewsFilterData) = true
+    }
 
     class List(private val predicates: Collection<NewsPredicate>) : NewsPredicate {
         override fun test(data: NewsFilterData): Boolean = predicates.all { it.test(data) }
@@ -20,7 +22,7 @@ sealed interface NewsPredicate : Predicate<NewsFilterData> {
         override fun test(data: NewsFilterData): Boolean = // TODO CHECK refactor
             title?.let { data.title.contains(it) } ?:
             description?.let { data.description.contains(it) } ?:
-            content?.let { data.content.contains(it) } ?:
+            content?.let { data.content?.contains(it) } ?:
             throw IllegalStateException()
     }
 
