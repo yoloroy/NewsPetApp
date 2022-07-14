@@ -2,6 +2,7 @@ package com.yoloroy.retrofit.news.model
 
 import com.yoloroy.domain.model.NewsDetails
 import com.yoloroy.domain.model.NewsShort
+import java.text.SimpleDateFormat
 import java.util.*
 
 data class Article(
@@ -18,19 +19,24 @@ data class Article(
         override val title get() = this@Article.title
         override val description get() = this@Article.description
         override val imageUrl get() = this@Article.urlToImage
-        override val publicationDate: Calendar
-            get() = TODO("Not yet implemented")
+        override val publicationDate: Calendar get() = calendarFromApiString(publishedAt)
 
-        fun details() = Details()
+        internal fun details() = Details()
     }
 
     inner class Details : NewsDetails {
         override val title get() = this@Article.title
         override val imageUrl get() = this@Article.urlToImage
         override val content get() = this@Article.content
-        override val publicationDate: Calendar
-            get() = TODO("Not yet implemented")
+        override val publicationDate: Calendar get() = calendarFromApiString(publishedAt)
 
-        fun short() = Short()
+        internal fun short() = Short()
     }
 }
+
+internal fun calendarFromApiString(apiDate: String) = Calendar.getInstance()
+    .apply {
+        val format = SimpleDateFormat("yyyy-MM-ddTHH:mm:ssZ", Locale.ENGLISH)
+        val date = format.parse(apiDate)!!
+        time = date
+    }
