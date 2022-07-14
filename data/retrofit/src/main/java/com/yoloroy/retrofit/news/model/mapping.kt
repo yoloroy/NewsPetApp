@@ -1,3 +1,5 @@
 package com.yoloroy.retrofit.news.model
 
-fun ArticlesRetrievingResult.toNewsShortList() = articles.map(Article::Short)
+import com.yoloroy.domain.model.NewsFilterData
+
+fun Article.toNewsFilterData() = NewsFilterData(title, description, content)
