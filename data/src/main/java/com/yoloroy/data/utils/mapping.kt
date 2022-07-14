@@ -9,11 +9,11 @@ import com.yoloroy.domain.use_case.SearchNewsUseCase.SearchResult
 fun Resource<List<NewsShort>>.toSearchResult(): SearchResult = when(this) {
     is Resource.Success -> SearchResult.Success(data)
     is Resource.NoInternetError -> SearchResult.NoInternetConnectionProblem
-    is Resource.UnknownError -> SearchResult.UnknownProblem
+    else -> SearchResult.UnknownProblem
 }
 
 fun Resource<NewsDetails>.toDetailsGettingResult(): DetailsGettingResult = when(this) {
     is Resource.Success -> DetailsGettingResult.Success(data)
     is Resource.NoInternetError -> DetailsGettingResult.NoInternetConnectionProblem
-    is Resource.UnknownError -> DetailsGettingResult.UnknownProblem
+    else -> DetailsGettingResult.UnknownProblem
 }
