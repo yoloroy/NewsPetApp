@@ -3,6 +3,7 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.7">
       <module name="NewsApp.app" target="11" />
+      <module name="NewsApp.data" target="11" />
       <module name="NewsApp.data.retrofit" target="11" />
       <module name="NewsApp.data.room" target="11" />
     </bytecodeTargetLevel>

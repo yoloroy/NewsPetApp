@@ -1,5 +1,6 @@
 package com.yoloroy.data.news
 
+import android.util.Log
 import com.yoloroy.data.news.model.NewsShortWithId
 import com.yoloroy.data.utils.toDetailsGettingResult
 import com.yoloroy.data.utils.toSearchResult
@@ -33,7 +34,7 @@ class NewsRepositoryImpl(
             emit(localSource.getDetails(short).toDetailsGettingResult())
         } else {
             emit(DetailsGettingResult.UnknownProblem)
-            // Log.w("NewsPeroImpl", "news short does not contain id, so it cannot provide details") TODO
+            Log.w("NewsPeroImpl", "news short does not contain id, so it cannot provide details")
         }
     }
 }
