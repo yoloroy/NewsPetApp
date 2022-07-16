@@ -1,10 +1,10 @@
 package com.yoloroy.data.news
 
 import com.yoloroy.data.common.Resource
-import com.yoloroy.data.news.model.NewsShortWithId
 import com.yoloroy.domain.model.NewsDetails
+import com.yoloroy.domain.model.NewsShort
 
 interface NewsLocalSource {
 
-    suspend fun getDetails(short: NewsShortWithId<*>): Resource<NewsDetails>
+    suspend fun getDetails(short: NewsShort): Resource<NewsDetails>
 }
