@@ -7,11 +7,11 @@ import com.yoloroy.domain.model.NewsDetails
 import com.yoloroy.domain.model.NewsShort
 import com.yoloroy.room.news.model.NewsShortWithId
 
-class NewsLocalSourceImpl : NewsLocalSource {
+class NewsLocalSourceImpl(private val articleSource: ArticleSource) : NewsLocalSource {
 
     override suspend fun getDetails(short: NewsShort): Resource<NewsDetails> {
         return if (short is NewsShortWithId) {
-            TODO()
+            Resource.Success(articleSource.getById(short.id).details())
         } else {
             Log.e("NewsPeroImpl", "this article hasn't been cached")
             Resource.UnknownError()
