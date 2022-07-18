@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">NewsApp</string>
+    <string name="no_internet_connection">No Internet connection!</string>
+    <string name="unknown_problem">Something wrong has happened(Unknown problem occurred)</string>
 </resources>
