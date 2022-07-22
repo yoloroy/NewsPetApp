@@ -4,8 +4,9 @@ import com.yoloroy.domain.model.NewsShort
 import com.yoloroy.newsapp.ui.model.NewsShortUi
 import java.util.*
 
-class NewsShortToUiMapper(locale: Locale) : Mapper<NewsShort, NewsShortUi> {
-    private val dateMapper = CalendarToStringMapper(locale)
+class NewsShortToUiMapper(
+    private val dateMapper: Mapper<Calendar, String>
+) : Mapper<NewsShort, NewsShortUi> {
 
     override fun map(data: NewsShort): NewsShortUi = NewsShortUi(
         data.imageUrl,

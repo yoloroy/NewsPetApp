@@ -4,8 +4,9 @@ import com.yoloroy.domain.model.NewsDetails
 import com.yoloroy.newsapp.ui.model.NewsDetailsUi
 import java.util.*
 
-class NewsDetailsToUiMapper(locale: Locale) : Mapper<NewsDetails, NewsDetailsUi> {
-    private val dateMapper = CalendarToStringMapper(locale)
+class NewsDetailsToUiMapper(
+    private val dateMapper: Mapper<Calendar, String>
+) : Mapper<NewsDetails, NewsDetailsUi> {
 
     override fun map(data: NewsDetails) = NewsDetailsUi(
         data.title,
