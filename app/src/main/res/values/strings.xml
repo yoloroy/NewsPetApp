@@ -2,4 +2,10 @@
     <string name="app_name">NewsApp</string>
     <string name="no_internet_connection">No Internet connection!</string>
     <string name="unknown_problem">Something wrong has happened(Unknown problem occurred)</string>
+    <string name="title_contains_name">Title filter</string>
+    <string name="title_contains_description">Title contains</string>
+    <string name="description_contains_name">Description filter</string>
+    <string name="content_contains_name">Content filter</string>
+    <string name="description_contains_description">Description contains</string>
+    <string name="content_contains_description">Content contains</string>
 </resources>
