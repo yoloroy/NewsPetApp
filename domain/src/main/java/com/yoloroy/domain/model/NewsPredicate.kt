@@ -34,3 +34,5 @@ sealed interface NewsPredicate {
 
     operator fun plus(other: NewsPredicate): NewsPredicate = List(listOf(this, other))
 }
+
+fun Collection<NewsPredicate>.sum() = NewsPredicate.List(this)

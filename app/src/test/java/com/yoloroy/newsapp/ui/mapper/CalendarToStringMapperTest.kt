@@ -1,5 +1,6 @@
 package com.yoloroy.newsapp.ui.mapper
 
+import com.yoloroy.newsapp.ui.mapper.common.CalendarToStringMapper
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.util.*

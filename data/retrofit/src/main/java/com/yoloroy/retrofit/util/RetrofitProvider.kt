@@ -18,11 +18,15 @@ object RetrofitProvider {
             .build()
             .also { okHttpClient = it }
 
-    fun provideRetrofit(context: Context, baseUrl: String) = retrofit
+    fun provideRetrofit(
+        context: Context,
+        baseUrl: String,
+        okHttpClient: OkHttpClient = provideOkHttpClient(context)
+    ) = retrofit
         ?: Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(provideOkHttpClient(context))
+            .client(okHttpClient)
             .build()
             .also { retrofit = it }
 
