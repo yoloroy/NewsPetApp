@@ -3,6 +3,7 @@ package com.yoloroy.newsapp.ui.mapper
 import android.content.Context
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.yoloroy.newsapp.ui.mapper.common.CommonProblemMapper
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

@@ -1,6 +1,7 @@
-package com.yoloroy.newsapp.ui.mapper
+package com.yoloroy.newsapp.ui.mapper.model_mapper
 
 import com.yoloroy.domain.model.NewsDetails
+import com.yoloroy.newsapp.ui.mapper.Mapper
 import com.yoloroy.newsapp.ui.model.NewsDetailsUi
 import java.util.*
 

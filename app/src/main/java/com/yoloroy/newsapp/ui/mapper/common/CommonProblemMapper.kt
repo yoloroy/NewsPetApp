@@ -1,7 +1,8 @@
-package com.yoloroy.newsapp.ui.mapper
+package com.yoloroy.newsapp.ui.mapper.common
 
 import android.content.Context
 import com.yoloroy.newsapp.R
+import com.yoloroy.newsapp.ui.mapper.ProblemMapper
 
 open class CommonProblemMapper<T : Any, UnknownProblem : T, NoInternetConnectionProblem : T>(
     private val context: Context,

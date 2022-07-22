@@ -1,5 +1,6 @@
-package com.yoloroy.newsapp.ui.mapper
+package com.yoloroy.newsapp.ui.mapper.common
 
+import com.yoloroy.newsapp.ui.mapper.Mapper
 import java.text.SimpleDateFormat
 import java.util.*
 
