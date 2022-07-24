@@ -51,9 +51,9 @@ interface Article {
     }
 }
 
-internal fun calendarFromApiString(apiDate: String) = Calendar.getInstance()
+internal fun calendarFromApiString(apiDate: String): Calendar = Calendar.getInstance()
     .apply {
-        val format = SimpleDateFormat("yyyy-MM-ddTHH:mm:ssZ", Locale.ENGLISH)
+        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
         val date = format.parse(apiDate)!!
         time = date
     }
