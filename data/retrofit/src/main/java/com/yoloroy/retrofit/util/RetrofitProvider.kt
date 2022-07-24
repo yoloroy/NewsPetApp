@@ -20,7 +20,7 @@ object RetrofitProvider {
 
     fun provideRetrofit(
         context: Context,
-        baseUrl: String,
+        baseUrl: String = "https://saurav.tech/NewsAPI/",
         okHttpClient: OkHttpClient = provideOkHttpClient(context)
     ) = retrofit
         ?: Retrofit.Builder()

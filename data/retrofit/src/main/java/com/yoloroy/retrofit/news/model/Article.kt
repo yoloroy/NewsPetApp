@@ -2,6 +2,7 @@ package com.yoloroy.retrofit.news.model
 
 import com.yoloroy.domain.model.NewsDetails
 import com.yoloroy.domain.model.NewsShort
+import kotlinx.serialization.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -19,6 +20,7 @@ interface Article {
     fun short(): NewsShort = Short(this)
     fun details(): NewsDetails = Details(this)
 
+    @Serializable
     data class DataClass(
         override val author: String?,
         override val content: String?,
