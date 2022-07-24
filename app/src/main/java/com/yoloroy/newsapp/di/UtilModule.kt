@@ -1,6 +1,7 @@
 package com.yoloroy.newsapp.di
 
 import android.content.Context
+import android.os.Build
 import com.yoloroy.newsapp.ui.news_list.NewsPredicateUi
 import dagger.Module
 import dagger.Provides
@@ -14,7 +15,13 @@ import java.util.*
 object UtilModule {
 
     @Provides
-    fun provideLocale(@ApplicationContext context: Context): Locale = context.resources.configuration.locales[0]
+    fun provideLocale(@ApplicationContext context: Context): Locale = context.resources.configuration.let { configuration ->
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            configuration.locales[0]
+        } else {
+            configuration.locale
+        }
+    }
 
     @Provides
     fun provideNewsPredicateUiResProducer(@ApplicationContext context: Context): NewsPredicateUi.ResProducer = NewsPredicateUi.ResProducer(context)

@@ -24,7 +24,7 @@ object RetrofitModule {
     @Singleton
     fun provideRetrofit(
         @ApplicationContext context: Context
-    ): Retrofit = RetrofitProvider.provideRetrofit(context, "")
+    ): Retrofit = RetrofitProvider.provideRetrofit(context)
 
     @Provides
     @Singleton

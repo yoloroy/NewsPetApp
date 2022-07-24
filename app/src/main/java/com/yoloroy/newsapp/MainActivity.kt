@@ -2,8 +2,12 @@ package com.yoloroy.newsapp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.yoloroy.newsapp.ui.main.MainFragment
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
+import com.yoloroy.newsapp.ui.news_list.NewsListFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
