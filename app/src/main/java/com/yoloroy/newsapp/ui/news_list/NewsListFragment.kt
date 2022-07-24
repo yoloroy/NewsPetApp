@@ -43,27 +43,52 @@ class NewsListFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        lifecycleScope.launch { // TODO refactor
-            Log.i(tag, "start observing VM")
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+        Log.i(tag, "start observing VM")
+        observeNews()
+        observeLoading()
+        observeProblems()
+    }
+
+    private fun observeNews() {
+        lifecycleScope.launch {
+            Log.i(tag, "start observing VM.news")
             viewModel.news
-                .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+                .flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
                 .collectLatest {
-                    Log.i(tag, it.joinToString(",\n\t", "[\n", "]"))
+                    Log.i(tag, it.joinToString(",\n", "[\n", "]"))
                     recyclerViewAdapter.updateValues(it)
                 }
+        }
+    }
 
+    private fun observeLoading() {
+        lifecycleScope.launch {
+            Log.i(tag, "start observing VM.isLoading")
             viewModel.isLoading
-                .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-                .collect { isLoading ->
+                .flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
+                .collectLatest { isLoading ->
                     Log.i(tag, "loading: $isLoading")
                     if (isLoading) {
-                        Toast.makeText(context, "loading", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "\uD83D\uDD03", Toast.LENGTH_SHORT).show() // 🔃
                     }
                 }
+        }
+    }
 
+    private fun observeProblems() {
+        lifecycleScope.launch {
+            Log.i(tag, "start observing VM.problem")
             viewModel.problem
-                .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-                .collect { problem -> Toast.makeText(context, problem, Toast.LENGTH_LONG) }
+                .flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
+                .collectLatest { problem ->
+                    if (problem != null) {
+                        Toast.makeText(context, problem, Toast.LENGTH_LONG).show()
+                    }
+                }
         }
     }
 
