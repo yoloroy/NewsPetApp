@@ -6,9 +6,10 @@
         android:name="com.yoloroy.newsapp.ui.news_list.NewsListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
         tools:context=".ui.news_list.NewsListFragment"
         tools:listitem="@layout/fragment_news_list_item"
-        tools:itemCount="10" />
+        tools:itemCount="10"
+        android:background="#f4f4f4"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp" />
