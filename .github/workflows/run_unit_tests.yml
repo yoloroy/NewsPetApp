@@ -14,17 +14,15 @@ jobs:
           java-version: 1.8
 
       # Execute unit tests
-      - name: Unit Test
-
-      - name: App
+      - name: test App
         run: ./gradlew testDebugUnitTest
-      - name: Domain
+      - name: test Domain
         run: ./gradlew domain:testDebugUnitTest
-      - name: Data
+      - name: test Data
         run: ./gradlew data:testDebugUnitTest
-      - name: Data.Room
+      - name: test Data.Room
         run: ./gradlew data:room:testDebugUnitTest
-      - name: Data.Retrofit
+      - name: test Data.Retrofit
         run: ./gradlew data:retrofit:testDebugUnitTest
 
       - name: Android Test Report
