@@ -20,10 +20,10 @@ sealed interface NewsPredicate {
         private val content: String? = null
     ) : NewsPredicate {
         override fun test(data: NewsFilterData): Boolean = // TODO CHECK refactor
-            title?.let { data.title.contains(it) } ?:
-            description?.let { data.description.contains(it) } ?:
-            content?.let { data.content?.contains(it) } ?:
-            throw IllegalStateException()
+            title?.let { data.title.contains(it) }
+            ?: description?.let { data.description.contains(it) }
+            ?: content?.let { data.content?.contains(it) }
+            ?: throw IllegalStateException()
     }
 
     class TitleContains(title: String) : Contains(title = title)

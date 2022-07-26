@@ -26,7 +26,8 @@ class NewsListFragment : Fragment() {
     private lateinit var recyclerViewAdapter: NewsListRecyclerViewAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         recyclerView = inflater.inflate(R.layout.fragment_news_list, container, false) as RecyclerView

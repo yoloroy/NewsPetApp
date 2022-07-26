@@ -69,7 +69,7 @@ class NewsListViewModel @Inject constructor(
 
     private fun List<NewsPredicateUi>.toSearchPredicate() = map { it.toPredicate() }.sum()
 
-    private val initialPredicates = with (newsPredicateResProducer) { // TODO move to constructor
+    private val initialPredicates = with(newsPredicateResProducer) { // TODO move to constructor
         listOf(
             produce(ResType.TitleContains),
             produce(ResType.DescriptionContains),
