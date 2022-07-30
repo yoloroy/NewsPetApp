@@ -41,7 +41,11 @@ class NewsListViewModel @Inject constructor(
     val isLoading: Flow<Boolean> get() = newsSearchResultFlow.map { it is SearchResult.Loading }
     val problem: Flow<String?> get() = newsSearchResultFlow.map(searchProblemMapper::map)
 
+    fun togglePredicate(predicate: NewsPredicateUi) = _predicates.update {
+        if (it.contains(predicate)) it - predicate else it + predicate
+    }
     fun addPredicate(predicate: NewsPredicateUi) = _predicates.update { it + predicate }
+    fun removePredicate(predicate: NewsPredicateUi) = _predicates.update { it - predicate }
     fun updatePredicate(index: Int, newFieldData: String) = _predicates.update { predicates ->
         predicates.apply {
             get(index).changeData(newFieldData)
@@ -69,11 +73,23 @@ class NewsListViewModel @Inject constructor(
 
     private fun List<NewsPredicateUi>.toSearchPredicate() = map { it.toPredicate() }.sum()
 
-    private val initialPredicates = with(newsPredicateResProducer) { // TODO move to constructor
-        listOf(
-            produce(ResType.TitleContains),
-            produce(ResType.DescriptionContains),
-            produce(ResType.ContentContains))
+    private val initialPredicates: List<NewsPredicateUi>
+
+    val titleContainsPredicateUi: NewsPredicateUi
+    val descriptionContainsPredicateUi: NewsPredicateUi
+    val contentContainsPredicateUi: NewsPredicateUi
+
+    init {
+        with(newsPredicateResProducer) {
+            titleContainsPredicateUi = produce(ResType.TitleContains)
+            descriptionContainsPredicateUi = produce(ResType.DescriptionContains)
+            contentContainsPredicateUi = produce(ResType.ContentContains)
+        }
+        initialPredicates = listOf(
+            titleContainsPredicateUi,
+            descriptionContainsPredicateUi,
+            contentContainsPredicateUi
+        )
     }
 
     companion object {
