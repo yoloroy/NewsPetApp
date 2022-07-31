@@ -8,4 +8,8 @@
     <string name="content_contains_name">Content filter</string>
     <string name="description_contains_description">Description contains</string>
     <string name="content_contains_description">Content contains</string>
+    <string name="action_add">Add</string>
+    <string name="action_remove">Remove</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_update">Update</string>
 </resources>

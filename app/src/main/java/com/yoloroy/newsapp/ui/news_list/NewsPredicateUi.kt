@@ -6,12 +6,12 @@ import com.yoloroy.domain.model.NewsPredicate
 import com.yoloroy.newsapp.R
 
 data class NewsPredicateUi(
-    private val type: Type,
+    val status: PredicateStatus,
+    val type: Type,
     val filterName: String,
     val description: String,
     val fieldData: String = ""
 ) {
-    fun changeData(fieldData: String) = copy(fieldData = fieldData)
 
     fun toPredicate(): NewsPredicate = when (type) {
         Type.TitleContains -> NewsPredicate.TitleContains(fieldData)
@@ -21,16 +21,11 @@ data class NewsPredicateUi(
 
     class ResProducer(private val context: Context) {
 
-        fun produce(type: Type) = produce(type.type, type.nameId, type.descriptionId)
-
-        fun produce(
-            type: NewsPredicateUi.Type,
-            @StringRes filterName: Int,
-            @StringRes description: Int
-        ) = NewsPredicateUi(
-            type,
-            context.getString(filterName),
-            context.getString(description)
+        fun produce(type: Type) = NewsPredicateUi(
+            PredicateStatus.Available,
+            type = type.type,
+            filterName = context.getString(type.nameId),
+            description = context.getString(type.descriptionId)
         )
 
         enum class Type(
@@ -57,4 +52,5 @@ data class NewsPredicateUi(
     }
 
     enum class Type { TitleContains, DescriptionContains, ContentContains }
+    enum class PredicateStatus { Available, Applied }
 }

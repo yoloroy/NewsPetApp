@@ -10,6 +10,7 @@ import com.yoloroy.domain.use_case.SearchNewsUseCase
 import com.yoloroy.domain.use_case.SearchNewsUseCase.SearchResult
 import com.yoloroy.newsapp.ui.mapper.Mapper
 import com.yoloroy.newsapp.ui.model.NewsShortUi
+import com.yoloroy.newsapp.ui.news_list.NewsPredicateUi.PredicateStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -33,22 +34,21 @@ class NewsListViewModel @Inject constructor(
         .map { it.news.map(newsSearchMapper::map) }
         .onStart { emit(emptyList()) }
 
-    private val _predicates = MutableStateFlow(emptyList<NewsPredicateUi>())
-    val predicates: Flow<List<NewsPredicateUi>> get() = _predicates
-
-    val availablePredicates get() = predicates.map { initialPredicates - it.toSet() }
+    private val _predicates: MutableStateFlow<List<NewsPredicateUi>>
+    val predicates: StateFlow<List<NewsPredicateUi>> get() = _predicates
 
     val isLoading: Flow<Boolean> get() = newsSearchResultFlow.map { it is SearchResult.Loading }
     val problem: Flow<String?> get() = newsSearchResultFlow.map(searchProblemMapper::map)
 
-    fun togglePredicate(predicate: NewsPredicateUi) = _predicates.update {
-        if (it.contains(predicate)) it - predicate else it + predicate
-    }
-    fun addPredicate(predicate: NewsPredicateUi) = _predicates.update { it + predicate }
-    fun removePredicate(predicate: NewsPredicateUi) = _predicates.update { it - predicate }
-    fun updatePredicate(index: Int, newFieldData: String) = _predicates.update { predicates ->
-        predicates.apply {
-            get(index).changeData(newFieldData)
+    fun applyPredicate(predicate: NewsPredicateUi, newData: String) = updatePredicate(
+        predicate.copy(status = PredicateStatus.Applied, fieldData = newData)
+    )
+    fun removePredicate(predicate: NewsPredicateUi) = updatePredicate(
+        predicate.copy(status = PredicateStatus.Available)
+    )
+    fun updatePredicate(predicate: NewsPredicateUi) = _predicates.update { predicates ->
+        predicates.map {
+            if (it.type == predicate.type) predicate else it
         }
     }
 
@@ -71,7 +71,10 @@ class NewsListViewModel @Inject constructor(
             .collectLatest { newsSearchResultFlow.emit(it) }
     }
 
-    private fun List<NewsPredicateUi>.toSearchPredicate() = map { it.toPredicate() }.sum()
+    private fun List<NewsPredicateUi>.toSearchPredicate() = this
+        .filter { it.status == PredicateStatus.Applied }
+        .map { it.toPredicate() }
+        .sum()
 
     private val initialPredicates: List<NewsPredicateUi>
 
@@ -90,6 +93,7 @@ class NewsListViewModel @Inject constructor(
             descriptionContainsPredicateUi,
             contentContainsPredicateUi
         )
+        _predicates = MutableStateFlow(initialPredicates)
     }
 
     companion object {
