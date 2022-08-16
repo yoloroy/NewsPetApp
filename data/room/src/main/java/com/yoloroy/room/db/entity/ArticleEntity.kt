@@ -33,7 +33,7 @@ data class ArticleEntity(
     @ColumnInfo(name = "url_to_image")
     val urlToImage: String?
 ) {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "article_id")
-    var articleId: Long = -1
+    var articleId: Long = 0
 }
