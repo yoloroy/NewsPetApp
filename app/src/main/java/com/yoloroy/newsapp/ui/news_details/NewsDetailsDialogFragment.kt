@@ -21,9 +21,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class NewsDetailsDialogFragment(
-    private val item: NewsShortUi
-) : DialogFragment() {
+class NewsDetailsDialogFragment() : DialogFragment() {
+
+    constructor(originItem: NewsShortUi) : this() {
+        this.originItem = originItem
+    }
 
     private val viewModel: NewsDetailsViewModel by viewModels()
 
@@ -32,6 +34,11 @@ class NewsDetailsDialogFragment(
     private lateinit var titleView: TextView
     private lateinit var publicationDateView: TextView
     private lateinit var contentView: TextView
+
+    /**
+     * null for case where fragment is restored
+     */
+    private var originItem: NewsShortUi? = null
 
     companion object {
         private const val tag = "NewsDetailsF"
@@ -69,7 +76,7 @@ class NewsDetailsDialogFragment(
 
     override fun onStart() {
         super.onStart()
-        viewModel.init(item)
+        originItem?.let { viewModel.init(it) }
         observeViewModel()
         requireDialog().window!!.setLayout(MATCH_PARENT, MATCH_PARENT)
     }
