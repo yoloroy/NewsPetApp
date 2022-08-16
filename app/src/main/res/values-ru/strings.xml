@@ -13,4 +13,5 @@
     <string name="action_remove">Удалить</string>
     <string name="action_cancel">Отмена</string>
     <string name="action_update">Изменить</string>
+    <string name="article_header_image">Заглавная картинка статьи</string>
 </resources>

@@ -12,4 +12,5 @@
     <string name="action_remove">Remove</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_update">Update</string>
+    <string name="article_header_image">Article header image</string>
 </resources>

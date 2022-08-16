@@ -30,6 +30,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+        freeCompilerArgs += [
+                "-Xcontext-receivers"
+        ]
     }
     buildFeatures {
         viewBinding true
@@ -38,7 +41,6 @@ android {
 
 dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.0'
     def fragment_version = "1.5.0"
     def roomVersion = "2.4.2"
 

@@ -51,6 +51,12 @@ object MappersModule {
 
     @Provides
     @Singleton
+    fun provideNewsShortUiToModelMapper(
+        newsShortToUiMapper: Mapper<NewsShort, NewsShortUi>
+    ): Mapper<NewsShortUi, NewsShort> = (newsShortToUiMapper as NewsShortToUiMapper).NewsShortUiToModelMapper()
+
+    @Provides
+    @Singleton
     fun provideCalendarToStringMapper(
         locale: Locale
     ): Mapper<Calendar, String> = CalendarToStringMapper(locale)

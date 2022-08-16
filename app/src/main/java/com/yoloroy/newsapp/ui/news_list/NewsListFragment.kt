@@ -17,6 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yoloroy.newsapp.R
 import com.yoloroy.newsapp.databinding.FragmentNewsListBinding
+import com.yoloroy.newsapp.ui.common.OnItemClickListener
+import com.yoloroy.newsapp.ui.model.NewsShortUi
+import com.yoloroy.newsapp.ui.news_details.NewsDetailsDialogFragment
 import com.yoloroy.newsapp.ui.news_list.NewsPredicateUi.PredicateStatus
 import com.yoloroy.newsapp.ui.news_list.predicate.contains.NewsPredicateContainsDialogFragment
 import com.yoloroy.newsapp.util.collections.swapKeysAndValues
@@ -25,14 +28,16 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class NewsListFragment : Fragment() {
+class NewsListFragment : Fragment(), OnItemClickListener<NewsShortUi> {
 
     private val viewModel: NewsListViewModel by viewModels()
     private val toolbarPredicatesManager by lazy { ToolbarPredicatesManager() }
 
     private lateinit var toolbar: Toolbar
     private lateinit var recyclerView: RecyclerView
-    private lateinit var recyclerViewAdapter: NewsListRecyclerViewAdapter
+    private val recyclerViewAdapter: NewsListRecyclerViewAdapter by lazy {
+        NewsListRecyclerViewAdapter(emptyList(), this@NewsListFragment)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,9 +50,7 @@ class NewsListFragment : Fragment() {
         toolbar = binder.toolbar
         recyclerView = binder.list.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = NewsListRecyclerViewAdapter(emptyList()).also { adapter ->
-                recyclerViewAdapter = adapter
-            }
+            adapter = recyclerViewAdapter
         }
 
         return view
@@ -63,6 +66,10 @@ class NewsListFragment : Fragment() {
         super.onStart()
 
         observeViewModel()
+    }
+
+    override fun onClickItem(view: View?, item: NewsShortUi) {
+        NewsDetailsDialogFragment.display(childFragmentManager, item)
     }
 
     private fun observeViewModel() {
