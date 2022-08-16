@@ -27,6 +27,7 @@ class NewsListViewModel @Inject constructor(
     newsPredicateResProducer: NewsPredicateUi.ResProducer
 ) : ViewModel() {
 
+    private var initialized = false
     private val newsSearchResultFlow = MutableStateFlow<SearchResult>(SearchResult.Loading)
 
     val news: Flow<List<NewsShortUi>> get() = newsSearchResultFlow
@@ -56,7 +57,10 @@ class NewsListViewModel @Inject constructor(
         viewModelScope.launch {
             Log.i(tag, "__init__")
             withContext(Dispatchers.IO) {
-                updateSearchResults(predicates.first().toSearchPredicate())
+                if (!initialized) {
+                    updateSearchResults(predicates.first().toSearchPredicate())
+                    initialized = true
+                }
                 predicates.collectLatest { predicates ->
                     updateSearchResults(predicates.toSearchPredicate())
                 }
