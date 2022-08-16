@@ -64,7 +64,6 @@ class NewsListFragment : Fragment(), OnItemClickListener<NewsShortUi> {
 
     override fun onStart() {
         super.onStart()
-
         observeViewModel()
     }
 
@@ -74,6 +73,7 @@ class NewsListFragment : Fragment(), OnItemClickListener<NewsShortUi> {
 
     private fun observeViewModel() {
         Log.i(tag, "start observing VM")
+        viewModel.init()
         observeNews()
         observeLoading()
         observeProblems()

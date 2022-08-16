@@ -52,7 +52,7 @@ class NewsListViewModel @Inject constructor(
         }
     }
 
-    init {
+    fun init() {
         viewModelScope.launch {
             Log.i(tag, "__init__")
             withContext(Dispatchers.IO) {
