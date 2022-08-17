@@ -34,7 +34,6 @@ class NewsListViewModel @Inject constructor(
         .onStart { emit(emptyList()) }
 
     private val _predicates: MutableStateFlow<List<NewsPredicateUi>>
-    private var predicatesChanged = false
     val predicates: StateFlow<List<NewsPredicateUi>> get() = _predicates
 
     val isLoading: Flow<Boolean> get() = newsSearchResultFlow.map { it is SearchResult.Loading }
@@ -47,7 +46,6 @@ class NewsListViewModel @Inject constructor(
         predicate.copy(status = PredicateStatus.Available)
     )
     fun updatePredicate(predicate: NewsPredicateUi) = _predicates.update { predicates ->
-        predicatesChanged = true
         predicates.map {
             if (it.type == predicate.type) predicate else it
         }
@@ -63,15 +61,14 @@ class NewsListViewModel @Inject constructor(
             }
         }
         viewModelScope.launch(Dispatchers.IO) {
-            predicates.collectLatest { predicates ->
-                if (!predicatesChanged) return@collectLatest
+            // drops 1st value because it need to observe only for updates
+            predicates.drop(1).collectLatest { predicates ->
                 updateSearchResults(predicates.toSearchPredicate())
             }
         }
     }
 
     private suspend fun updateSearchResults(searchPredicate: NewsPredicate) {
-        predicatesChanged = false
         Log.i(tag, "updateSearchResults")
         newsSearchResultFlow.emit(SearchResult.Loading)
         searchNewsUseCase.search(searchPredicate)
