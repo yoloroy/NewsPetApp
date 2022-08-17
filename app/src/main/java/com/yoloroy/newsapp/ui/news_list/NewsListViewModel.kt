@@ -15,7 +15,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import com.yoloroy.newsapp.ui.news_list.NewsPredicateUi.ResProducer.Type as ResType
 
@@ -27,7 +26,6 @@ class NewsListViewModel @Inject constructor(
     newsPredicateResProducer: NewsPredicateUi.ResProducer
 ) : ViewModel() {
 
-    private var initialized = false
     private val newsSearchResultFlow = MutableStateFlow<SearchResult>(SearchResult.Loading)
 
     val news: Flow<List<NewsShortUi>> get() = newsSearchResultFlow
@@ -36,6 +34,7 @@ class NewsListViewModel @Inject constructor(
         .onStart { emit(emptyList()) }
 
     private val _predicates: MutableStateFlow<List<NewsPredicateUi>>
+    private var predicatesChanged = false
     val predicates: StateFlow<List<NewsPredicateUi>> get() = _predicates
 
     val isLoading: Flow<Boolean> get() = newsSearchResultFlow.map { it is SearchResult.Loading }
@@ -48,27 +47,31 @@ class NewsListViewModel @Inject constructor(
         predicate.copy(status = PredicateStatus.Available)
     )
     fun updatePredicate(predicate: NewsPredicateUi) = _predicates.update { predicates ->
+        predicatesChanged = true
         predicates.map {
             if (it.type == predicate.type) predicate else it
         }
     }
 
+    private var firstInit = true
     fun init() {
-        viewModelScope.launch {
-            Log.i(tag, "__init__")
-            withContext(Dispatchers.IO) {
-                if (!initialized) {
-                    updateSearchResults(predicates.first().toSearchPredicate())
-                    initialized = true
-                }
-                predicates.collectLatest { predicates ->
-                    updateSearchResults(predicates.toSearchPredicate())
-                }
+        Log.i(tag, "__init__")
+        if (firstInit) {
+            viewModelScope.launch(Dispatchers.IO) {
+                updateSearchResults(predicates.value.toSearchPredicate())
+                firstInit = false
+            }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            predicates.collectLatest { predicates ->
+                if (!predicatesChanged) return@collectLatest
+                updateSearchResults(predicates.toSearchPredicate())
             }
         }
     }
 
     private suspend fun updateSearchResults(searchPredicate: NewsPredicate) {
+        predicatesChanged = false
         Log.i(tag, "updateSearchResults")
         newsSearchResultFlow.emit(SearchResult.Loading)
         searchNewsUseCase.search(searchPredicate)
